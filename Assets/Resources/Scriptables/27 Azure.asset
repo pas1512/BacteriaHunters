@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74fc5416abb391c4c8ddaab51f00e3ac, type: 3}
+  m_Name: 27 Azure
+  m_EditorClassIdentifier: 
+  _material: {fileID: 2100000, guid: 88dd4e6be0f9ebd4080e8b0f9cf3b239, type: 2}
+  _typeId: 27
+  _size: 0.1
+  _lookArea: 1
+  _speed: 0.35
+  _targets:
+    _id1: 28
+    _id2: 2
+    _id3: 3
+    _id4: -1
+    _id5: -1
+    _id6: -1
+    _id7: -1
+    _id8: -1
+  _enemies:
+    _id1: 26
+    _id2: 24
+    _id3: 25
+    _id4: 0
+    _id5: 1
+    _id6: -1
+    _id7: -1
+    _id8: -1
+  _boidsWheights: {x: 0, y: 1, z: 0}
+  _pointsWheights: {x: 0.05, y: 10}
+  _navigationWheights: {x: 0.6, y: 1}
