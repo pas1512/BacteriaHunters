@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BacterialContainer
 {
+    private const float MIN_SURFACE_DISTANCE = 0.01f;
+
     private List<Bacterium> _bacteria;
     public Bacterium[] bacteria => _bacteria.ToArray();
 
@@ -18,8 +20,10 @@ public class BacterialContainer
         {
             int randomData = Random.Range(0, variants.Length);
             int randomSurface = Random.Range(0, surfaces.Length);
-            Vector3 position = surfaces[randomSurface].GetRandomPosition();
-            _bacteria.Add(new Bacterium(variants[randomData], position));
+            LevelSurface surface = surfaces[randomSurface];
+            Vector3 normal = surface.normal;
+            Vector3 position = surface.GetRandomPosition() + normal * MIN_SURFACE_DISTANCE;
+            _bacteria.Add(new Bacterium(variants[randomData], position, normal));
         }
     }
 

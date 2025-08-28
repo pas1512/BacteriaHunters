@@ -42,9 +42,11 @@ public struct Bacterium
         _velocity = Random.insideUnitSphere;
     }
 
-    public Bacterium(BacteriumData data, Vector3 position) : this(data)
+    public Bacterium(BacteriumData data, Vector3 position, Vector3 normal) : this(data)
     {
         _position = position;
+        _normal = normal;
+        _rotation = Quaternion.FromToRotation(Vector3.up, normal);
     }
 
     public Bacterium(Bacterium other)
@@ -86,11 +88,14 @@ public struct Bacterium
 
     public void UpdateNormal(Vector3 normal, Vector3 hit)
     {
+        if (normal.magnitude < 0.9f)
+            return;
+
         Vector3 oldNormal = _normal;
         _normal = normal.normalized;
-        _position = hit + _normal * 0.01f;
+        _position = hit + (_normal * 0.01f);
 
-        if (Vector3.Angle(oldNormal, _normal) > 0.1f)
+        if (Vector3.Angle(oldNormal, _normal) > 0.01f)
         {
             _rotation = Quaternion.FromToRotation(Vector3.up, _normal);
             _velocity = Quaternion.FromToRotation(oldNormal, _normal) * _velocity;

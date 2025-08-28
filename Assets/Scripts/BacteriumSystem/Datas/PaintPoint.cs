@@ -27,15 +27,21 @@ public struct PaintPoint
 
     public float GetArea()
     {
-        return Mathf.PI * size *size;
+        return Mathf.PI * size * size;
     }
 
     public void SetArea(float area)
     {
-        _scale = MathF.Sqrt(area / Mathf.PI);
+        if (area <= 0.01f || float.IsNaN(area))
+            _scale = 0.01f;
+        else
+            _scale = MathF.Sqrt(area / Mathf.PI);
     }
 
-    public Matrix4x4 GetTRS() => Matrix4x4.TRS(_point, _rotation, Vector3.one * _scale);
+    public Matrix4x4 GetTRS()
+    {
+        return Matrix4x4.TRS(_point, _rotation, Vector3.one * _scale);
+    }
 
     public static float GetOverlapValue(PaintPoint p1, PaintPoint p2)
     {

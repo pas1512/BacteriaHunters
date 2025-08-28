@@ -1,9 +1,13 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
+[Serializable]
 public class PaintsContainer 
 {
-    private List<PaintPoint> _paints;
+    [SerializeField] private List<PaintPoint> _paints;
     private bool _changed;
 
     public PaintPoint[] paints => _paints.ToArray();
@@ -15,31 +19,37 @@ public class PaintsContainer
 
     public void AddPaint(Vector3 point, Vector3 normal, int color, float size)
     {
+        if (_paints.Any(p => Vector3.Distance(point, p.point) < (p.size + size) / 4))
+            return;
+
         float angle = Random.Range(0, 2 * Mathf.PI);
-        PaintPoint paint = new PaintPoint(point, Quaternion.AngleAxis(angle, normal), color, size);
+        Vector3 position = point + normal * 0.001f;
+        Quaternion normalRotation = Quaternion.FromToRotation(Vector3.up, normal);
+        Quaternion rotation = Quaternion.AngleAxis(angle, normal) * normalRotation;
+        PaintPoint paint = new PaintPoint(position, rotation, color, size * 2);
         _paints.Add(paint);
         _changed = true;
     }
 
-    public void TryTakePaint(int id, float size)
+    public void TakePaint(int id, float size)
     {
         if (id < 0 || id >= _paints.Count)
             return;
 
         var paint = _paints[id];
         float newArea = paint.GetArea() - size;
-
-        if(newArea > 0)
-        {
-            paint.SetArea(newArea);
-            _paints[id] = paint;
-        }
-        else
-        {
-            _paints.RemoveAt(id);
-        }
-
+        paint.SetArea(newArea);
+        _paints[id] = paint;
         _changed = true;
+    }
+
+    public void ClearFinished()
+    {
+        for (int i = _paints.Count - 1; i >= 0; i--)
+        {
+            if (_paints[i].size <= 0.01f)
+                _paints.RemoveAt(i);
+        }
     }
 
     public bool IsChanged()

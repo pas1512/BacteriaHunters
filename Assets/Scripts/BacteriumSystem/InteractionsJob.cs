@@ -92,27 +92,23 @@ public struct InteractionsJob : IJobParallelFor
             if (distance <= 0.001f) distance = 0.001f;
 
             int colorId = paint.color;
+            float paintSize = paint.size;
 
             if (current.enemies.Contains(colorId))
             {
-                float paintSize = paint.size;
                 leaksSum += offset * paint.size / (distance * distance);
                 enemiesCount++;
 
-                if(distance < (current.size + paintSize) / 2)
-                {
-                    if (current.targets.Contains(paint.color))
-                        feedingData = new CastingData(true, false, false, i);
-                    else if (current.enemies.Contains(paint.color))
-                        feedingData = new CastingData(true, false, true, i);
-                    else continue;
-                }
+                if (distance < (current.size + paintSize) / 2)
+                    feedingData = new CastingData(true, false, true, i);
             }
 
-            if (current.targets.Contains(colorId) && distance < minDistance)
+            if (current.targets.Contains(colorId))
             {
                 targetOffset = -offset.normalized;
-                minDistance = distance;
+
+                if (distance < (current.size + paintSize) / 2)
+                    feedingData = new CastingData(true, false, false, i);
             }
         }
 

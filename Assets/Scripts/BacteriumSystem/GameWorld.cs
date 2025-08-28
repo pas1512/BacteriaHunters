@@ -8,9 +8,11 @@ using Random = UnityEngine.Random;
 
 public class GameWorld : MonoBehaviour
 {
-    [SerializeField] private int _startBacterialNumber;
+    [SerializeField] private int _bacterialNumber;
+    [SerializeField] private int _spotsNumber;
     [SerializeField] private BacteriumData[] _bacterialVariations;
     [SerializeField] private Material[] _paintsMaterials; 
+    private static GameWorld _instance;
 
     private NativeArray<LevelSurface> _surfaces;
     private bool _surfacesSetuped;
@@ -31,13 +33,17 @@ public class GameWorld : MonoBehaviour
     private Material[] _materials;
     private List<Matrix4x4>[] _matrixes;
     private Mesh _quad;
+    private JobHandle _currentJob;
+
+    public void SetBacteriasNumber(int number) => _bacterialNumber = number;
 
     public IEnumerator Start()
     {
+        _instance = this;
         InitCeches();
         yield return new WaitUntil(() => _surfacesSetuped); 
 
-        _bacterialsContainer = new BacterialContainer(_startBacterialNumber, _bacterialVariations, _surfaces.ToArray());
+        _bacterialsContainer = new BacterialContainer(_bacterialNumber, _bacterialVariations, _surfaces.ToArray());
         UpdateArray(ref _bacteria, _bacterialsContainer.bacteria);
 
         _paintContainer = new PaintsContainer();
@@ -62,31 +68,32 @@ public class GameWorld : MonoBehaviour
         {
             Bacterium[] array = _bacterialsContainer.bacteria;
             int currentCount = array.Length;
+            _bacterialNumber = _bacteria.Length;
+            _spotsNumber = _paints.Length;
 
             if (_paintContainer.IsChanged())
+            {
+                _paintContainer.ClearFinished();
                 UpdateArray(ref _paints, _paintContainer.paints);
+            }
 
             if (_bacterialsContainer.IsChanged())
             {
                 UpdateArray(ref _bacteria, array);
-
-                if (_accelerations.Length != currentCount || !_accelerations.IsCreated || !_castings.IsCreated)
-                {
-                    UpdateArray(ref _accelerations, currentCount);
-                    UpdateArray(ref _castings, currentCount);
-                }
+                UpdateArray(ref _accelerations, currentCount);
+                UpdateArray(ref _castings, currentCount);
             }
 
             var boidsJob = new InteractionsJob(_bacteria, _paints, _accelerations, _castings);
             var boidsHandle = boidsJob.Schedule(currentCount, 0);
 
             var moveJob = new MoveJob(_accelerations, _surfaces, _bacteria, Time.deltaTime);
-            var moveHandle = moveJob.Schedule(currentCount, 0, boidsHandle);
+            _currentJob = moveJob.Schedule(currentCount, 0, boidsHandle);
 
-            while (!moveHandle.IsCompleted)
+            while (!_currentJob.IsCompleted)
                 yield return null;
 
-            moveHandle.Complete();
+            _currentJob.Complete();
             _bacterialsContainer.SyncData(_bacteria);
             ApplyCastings();
             UpdateView();
@@ -95,9 +102,9 @@ public class GameWorld : MonoBehaviour
         }
     }
 
-    public void AddPaint(Vector3 point, Vector3 normal, int color, float size)
+    public static void AddPaint(Vector3 point, Vector3 normal, int color, float size)
     {
-        _paintContainer.AddPaint(point, normal, color, size);
+        _instance._paintContainer.AddPaint(point, normal, color, size);
     }
 
     public void SetSurfaces(LevelSurface[] surfaces)
@@ -209,17 +216,17 @@ public class GameWorld : MonoBehaviour
             }
             else
             {
-                _paintContainer.TryTakePaint(targetId, current.size);
-            }
+                _paintContainer.TakePaint(targetId, current.size);
 
-            if (_castings[i].selfDestruction)
-                removedBacterium.Add(i);              
-            else if(Random.Range(0, 4) == 0)
-                added.Add(current.Duplicate());
+                if (_castings[i].selfDestruction)
+                    removedBacterium.Add(i);
+                else if (Random.Range(0, 4) == 0)
+                    added.Add(current.Duplicate());
+            }
         }
 
-        //_bacterialsContainer.Remove(removedBacterium.ToArray());
-        //_bacterialsContainer.Add(added.ToArray());
+        _bacterialsContainer.Remove(removedBacterium.ToArray());
+        _bacterialsContainer.Add(added.ToArray());
     }
 
     private void UpdateView()
@@ -243,10 +250,17 @@ public class GameWorld : MonoBehaviour
 
     private void OnDestroy()
     {
+        _currentJob.Complete();
         if (_paints.IsCreated) _paints.Dispose();
         if (_bacteria.IsCreated) _bacteria.Dispose();
         if(_accelerations.IsCreated) _accelerations.Dispose();
         if(_castings.IsCreated) _castings.Dispose();
         if(_surfaces.IsCreated) _surfaces.Dispose();
+    }
+
+    private void OnGUI()
+    {
+        GUILayout.Label($"Bacterial: {_bacterialNumber}");
+        GUILayout.Label($"Spots: {_spotsNumber}");
     }
 }

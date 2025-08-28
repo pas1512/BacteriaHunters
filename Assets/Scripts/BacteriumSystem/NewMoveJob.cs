@@ -4,9 +4,9 @@ using Unity.Jobs;
 using UnityEngine;
 
 [BurstCompile]
-public struct MoveJob : IJobParallelFor
+public struct NewMoveJob : IJobParallelFor
 {
-    private readonly static Vector3 DIR1 = new Vector3( 0,  0.000f,  1.0f);
+    private readonly static Vector3 DIR1 = new Vector3(0, 0.000f, 1.0f);
     private readonly static Vector3 DIR2 = new Vector3(0, -0.866f, -0.5f);
     private readonly static Vector3 DIR3 = new Vector3(0, 0.866f, -0.5f);
     private readonly static Vector3 DIR4 = new Vector3(0, -1.000f, 0.0f);
@@ -16,23 +16,14 @@ public struct MoveJob : IJobParallelFor
     private NativeArray<Bacterium> _data;
     private float _deltaTime;
 
-    public MoveJob(NativeArray<Vector3> accelerations, NativeArray<LevelSurface> surfaces, NativeArray<Bacterium> bacteriaDatas, float deltaTime)
-    {
-        _accelerations = accelerations;
-        _surfaces = surfaces;
-        _data = bacteriaDatas;
-        _deltaTime = deltaTime;
-    }
-
     public void Execute(int index)
     {
-        var data = _data[index];
         float minDistance = float.MaxValue;
         RaycastResult clossestHit = default;
-        Vector3 raycastOrigin = data.position + (data.normal * data.size);
-        float castSize = data.size + data.speed * 0.01f;
+        Vector3 raycastOrigin = _data[index].position + _data[index].normal * _data[index].size;
+        float castSize = _data[index].size + _data[index].speed * 0.01f;
 
-        Quaternion rot = Quaternion.FromToRotation(Vector3.forward, data.velocity);
+        Quaternion rot = _data[index].rotation;
         Vector3 d1 = rot * DIR1 * castSize;
         Vector3 d2 = rot * DIR2 * castSize;
         Vector3 d3 = rot * DIR3 * castSize;
@@ -42,7 +33,7 @@ public struct MoveJob : IJobParallelFor
         {
             Vector3 rayOrigin = raycastOrigin;
 
-            if(_surfaces[s].Raycast(rayOrigin, d1, castSize, out var hit) &&
+            if (_surfaces[s].Raycast(rayOrigin, d1, castSize, out var hit) &&
                 hit.distance < minDistance)
             {
                 minDistance = hit.distance;
@@ -77,6 +68,7 @@ public struct MoveJob : IJobParallelFor
             }
         }
 
+        var data = _data[index];
         data.UpdateNormal(clossestHit.normal, clossestHit.point);
         data.ApplyAcceleration(_accelerations[index], _deltaTime);
         _data[index] = data;
