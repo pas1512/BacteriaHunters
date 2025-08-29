@@ -4,7 +4,6 @@ public class RoomsGeneratorTester : MonoBehaviour
 {
     [SerializeField] private bool _drawGizmos;
     [SerializeField] private RoomsGeneratorParameters _parameters;
-    [SerializeField] private RoomMesherTester _meshGenerator;
     [SerializeField, HideInInspector] private Room[] _rooms;
 
     private Vector3 To3D(Vector2 v2) => new Vector3(v2.x, 0, v2.y);
@@ -18,7 +17,6 @@ public class RoomsGeneratorTester : MonoBehaviour
 
         RoomsGenerator roomsGenerator = new RoomsGenerator();
         _rooms = roomsGenerator.Generate(To2D(transform.position), _parameters);
-        _meshGenerator?.SetRooms(_rooms);
     }
 
     private void OnDrawGizmos()

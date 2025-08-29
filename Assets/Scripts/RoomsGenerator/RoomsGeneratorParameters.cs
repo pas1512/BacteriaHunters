@@ -13,14 +13,17 @@ public class RoomsGeneratorParameters : ScriptableObject
     [SerializeField] private float _minOverlape = 1;
     [SerializeField] private float _doorWidth = 1.5f;
     [SerializeField] private float _wallWidth = 0.5f;
+    [SerializeField] private Material _floor;
+    [SerializeField] private Material _walls;
+    [SerializeField] private Material _ceil;
 
     public int GetStartSteps() => _steps;
     public float GetGenerationStep() => _generationsSteps.GetRandom();
-    public int GetNeighborsCount() => (int)_neighborsCount.GetRandom();
+    public int GetNeighborsCount() => (int)MathF.Round(_neighborsCount.GetRandom());
     public Vector2 GetDoorSize() => new Vector2(_doorWidth, _wallWidth);
     public float GetSizeX() => _roomWidth.GetRandom();
     public float GetSizeY() => _roomLength.GetRandom();
-    internal int GetBacteriesNumber() => (int)_bacteries.GetRandom();
+    internal int GetBacteriesNumber() => (int)MathF.Round(_bacteries.GetRandom());
     public float GetWallWidth() => _wallWidth;
 
     public Vector2 GetMinOverlape()
@@ -28,4 +31,6 @@ public class RoomsGeneratorParameters : ScriptableObject
         float minOverlape = _minOverlape + _doorWidth;
         return new Vector2(minOverlape, minOverlape);
     }
+
+    internal Material[] GetLevelMaterials() => new Material[] { _floor, _walls, _ceil};
 }

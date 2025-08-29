@@ -12,7 +12,7 @@ public class SurfaceTester : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.white;
-        Gizmos.DrawWireMesh(_surface.GetMesh());
+        Gizmos.DrawWireMesh(_surface.CreateMesh());
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(_testPoint.position, 0.1f);

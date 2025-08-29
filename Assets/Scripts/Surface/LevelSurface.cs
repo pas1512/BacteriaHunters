@@ -2,26 +2,37 @@ using UnityEngine;
 
 public struct LevelSurface
 {
+    public readonly int materialType;
     public readonly Vector3 position;
     public readonly Vector2 size;
     public readonly Quaternion rotation;
     public readonly float area;
-    public Vector3 normal => rotation * Vector3.forward;
+    public readonly Vector3 normal;
+    public readonly Vector3 tangent;
+    public readonly Vector3 bitangent;
     
-    public LevelSurface(Transform surface)
+    public LevelSurface(Transform surface, int materialType = 0)
     {
+        this.materialType = materialType;
         position = surface.position;
         size = surface.localScale;
         rotation = surface.rotation;
         area = size.x * size.y;
+        normal = rotation * Vector3.forward;
+        tangent = rotation * Vector3.right;
+        bitangent = rotation * Vector3.up;
     }
 
-    public LevelSurface(Vector3 position, Quaternion roataion, Vector2 size)
+    public LevelSurface(Vector3 position, Quaternion roataion, Vector2 size, int materialType = 0)
     {
+        this.materialType = materialType;
         this.position = position;
         this.size = size;
         this.rotation = roataion;
         this.area = size.x * size.y;
+        this.normal = rotation * Vector3.forward;
+        this.tangent = rotation * Vector3.right;
+        this.bitangent = rotation * Vector3.up;
     }
 
     public bool Raycast(Vector3 origin, Vector3 dir, float maxDist, out RaycastResult raycastResult)
@@ -75,21 +86,28 @@ public struct LevelSurface
 
     public Matrix4x4 GetTRS() => Matrix4x4.TRS(position, rotation, size);
 
-    public Mesh GetMesh()
+    public Mesh CreateMesh()
     {
         Matrix4x4 trs = GetTRS();
         Mesh mesh = new Mesh();
 
         int[] triangles = new int[] { 0, 2, 1, 0, 3, 2 };
-        Vector2[] uvs = new Vector2[] { new Vector2(0, 0), new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1) };
-        Vector3[] normals = new Vector3[] { Vector3.forward, Vector3.forward, Vector3.forward, Vector3.forward };
-        
+        Vector3[] normals = new Vector3[] { normal, normal, normal, normal };
+
         Vector3[] vertices = new Vector3[] 
         { 
             trs.MultiplyPoint(new Vector3(-.5f, -.5f)),
             trs.MultiplyPoint(new Vector3(-.5f,  .5f)), 
             trs.MultiplyPoint(new Vector3( .5f,  .5f)),
             trs.MultiplyPoint(new Vector3( .5f, -.5f))
+        };
+
+        Vector2[] uvs = new Vector2[]
+        {
+            new Vector2(Vector3.Dot(vertices[0], tangent), Vector3.Dot(vertices[0], bitangent)),
+            new Vector2(Vector3.Dot(vertices[1], tangent), Vector3.Dot(vertices[1], bitangent)),
+            new Vector2(Vector3.Dot(vertices[2], tangent), Vector3.Dot(vertices[2], bitangent)),
+            new Vector2(Vector3.Dot(vertices[3], tangent), Vector3.Dot(vertices[3], bitangent)),
         };
 
         mesh.vertices = vertices;

@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc5a68e9af23bba4b8b3a83ec49447cf, type: 3}
+  m_Name: Level5
+  m_EditorClassIdentifier: 
+  _bacteries:
+    _min: 300
+    _max: 400
+  _steps: 2
+  _roomWidth:
+    _min: 4
+    _max: 6
+  _roomLength:
+    _min: 4
+    _max: 6
+  _generationsSteps:
+    _min: 0.01
+    _max: 0.02
+  _neighborsCount:
+    _min: 2
+    _max: 3
+  _minOverlape: 1
+  _doorWidth: 1.5
+  _wallWidth: 0.5
+  _floor: {fileID: 2100000, guid: 3509239551814894ab681e1762a65bb8, type: 2}
+  _walls: {fileID: 2100000, guid: a7e987a29421cbf4cad4279758be1eaa, type: 2}
+  _ceil: {fileID: 2100000, guid: 3509239551814894ab681e1762a65bb8, type: 2}

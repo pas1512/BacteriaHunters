@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class LevelIniter : MonoBehaviour
@@ -19,9 +18,9 @@ public class LevelIniter : MonoBehaviour
         var parameters = _parameters[_currentLevel];
         RoomsGenerator generator = new RoomsGenerator();
         Room[] rooms = generator.Generate(transform.position, parameters);
-        LevelSurface[] surfaces = _mesher.GetSurfaces(rooms);
-        Mesh mesh = RoomMesher.GenerateMesh(surfaces);
-        _mesh.SetMesh(mesh);
+        var surfaces = _mesher.GetSurfaces(rooms);
+        Mesh mesh = RoomMesher.GenerateMesh2(surfaces);
+        _mesh.SetMesh(mesh, parameters.GetLevelMaterials());
         _world.SetBacteriasNumber(parameters.GetBacteriesNumber());
         _world.SetSurfaces(surfaces);
     }

@@ -59,6 +59,7 @@ public class RoomMesher : MonoBehaviour
     }
 
     private Vector3 To3D(Vector2 p) => new Vector3(p.x, 0, p.y);
+    private Vector3 To2D(Vector3 p) => new Vector3(p.x, p.z);
 
     private PointWrapper[] GetPoints(Room room)
     {
@@ -110,20 +111,20 @@ public class RoomMesher : MonoBehaviour
         Vector3 center = (pos1 + pos2) / 2f;
         Vector3 surfacePosition = center;
         Vector3 normal = Vector3.Cross(offset, Vector3.down).normalized;
-        Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, normal);
+        Quaternion rotation = Quaternion.LookRotation(normal, Vector3.up);
 
         if (p1.type == 0)
         {
             Vector2 surfaceSize = new Vector2(offset.magnitude, _roomHeight);
             surfacePosition.y += _roomHeight / 2;
-            return new LevelSurface(surfacePosition, rotation, surfaceSize);
+            return new LevelSurface(surfacePosition, rotation, surfaceSize, 1);
         }
         else
         {
             float height = _roomHeight - _doorHeight;
             Vector2 surfaceSize = new Vector2(offset.magnitude, height);
             surfacePosition.y += _doorHeight + (height / 2);
-            return new LevelSurface(surfacePosition, rotation, surfaceSize);
+            return new LevelSurface(surfacePosition, rotation, surfaceSize, 1);
         }
     }
 
@@ -138,7 +139,7 @@ public class RoomMesher : MonoBehaviour
         Vector3 position1 = To3D(door.center) + (normal / 2);
         Quaternion rotaiton1 = Quaternion.LookRotation(Vector3.up, nNormal);
         Vector2 size1 = new Vector2(width, depth);
-        result[0] = new LevelSurface(position1, rotaiton1, size1);
+        result[0] = new LevelSurface(position1, rotaiton1, size1, 0);
 
         Vector3 tangent = To3D(door.tangent);
         Vector3 nTangent = tangent.normalized;
@@ -147,15 +148,15 @@ public class RoomMesher : MonoBehaviour
         Vector3 position2 = center - tangent;
         Vector2 size2 = new Vector2(_doorHeight, depth);
         Quaternion rotation2 = Quaternion.LookRotation(nTangent, nNormal);
-        result[1] = new LevelSurface(position2, rotation2, size2);
+        result[1] = new LevelSurface(position2, rotation2, size2, 1);
 
         Vector3 position3 = center + tangent;
         Quaternion rotation3 = Quaternion.LookRotation(-nTangent, nNormal);
-        result[2] = new LevelSurface(position3, rotation3, size2);
+        result[2] = new LevelSurface(position3, rotation3, size2, 1);
 
         Vector3 position4 = position1 + (Vector3.up * _doorHeight);
         Quaternion rotaiton4 = Quaternion.LookRotation(Vector3.down, nNormal);
-        result[3] = new LevelSurface(position4, rotaiton4, size1);
+        result[3] = new LevelSurface(position4, rotaiton4, size1, 2);
 
         return result;
     }
@@ -175,13 +176,14 @@ public class RoomMesher : MonoBehaviour
 
             Vector3 position1 = To3D(room.position);
             Quaternion rotation1 = Quaternion.LookRotation(Vector3.up, Vector3.forward);
-            surfaces.Add(new LevelSurface( position1, rotation1, size2));
+            surfaces.Add(new LevelSurface( position1, rotation1, size2, 0));
 
             Vector3 position2 = position1 + (Vector3.up * _roomHeight);
             Quaternion rotation2 = Quaternion.LookRotation(Vector3.down, Vector3.forward);
-            surfaces.Add(new LevelSurface(position2, rotation2, size2));
+            surfaces.Add(new LevelSurface(position2, rotation2, size2, 2));
 
             var points = GetPoints(room);
+            float hV = _roomHeight / (size2.x + size2.y) * 2;
 
             for (int i = 1; i < points.Length; i++)
                 surfaces.Add(GetSurface(points[i - 1], points[i]));
@@ -195,7 +197,7 @@ public class RoomMesher : MonoBehaviour
         return surfaces.ToArray();
     }
 
-    public static Mesh GenerateMesh(LevelSurface[] meshes)
+    public static Mesh GenerateMesh(LevelSurface[] surfaces)
     {
         List<Vector3> vertices = new List<Vector3>();
         List<Vector3> normals = new List<Vector3>();
@@ -204,9 +206,9 @@ public class RoomMesher : MonoBehaviour
 
         int vertexOffset = 0;
 
-        for (int m = 0; m < meshes.Length; m++)
+        for (int m = 0; m < surfaces.Length; m++)
         {
-            Mesh mesh = meshes[m].GetMesh();
+            Mesh mesh = surfaces[m].CreateMesh();
             Matrix4x4 transform = Matrix4x4.identity;
 
             Vector3[] v = mesh.vertices;
@@ -244,6 +246,51 @@ public class RoomMesher : MonoBehaviour
         combined.SetTriangles(triangles, 0);
         //combined.SetNormals(normals);
         combined.RecalculateNormals();
+        combined.RecalculateBounds();
+
+        return combined;
+    }
+
+    public static Mesh GenerateMesh2(LevelSurface[] surfaces)
+    {
+        List<Vector3> vertices = new List<Vector3>();
+        List<Vector3> normals = new List<Vector3>();
+        List<Vector2> uvs = new List<Vector2>();
+        Dictionary<int, List<int>> submeshTriangles = new Dictionary<int, List<int>>();
+
+        int vertexOffset = 0;
+
+        for (int m = 0; m < surfaces.Length; m++)
+        {
+            Mesh mesh = surfaces[m].CreateMesh();
+            int materialType = surfaces[m].materialType;
+
+            vertices.AddRange(mesh.vertices);
+            normals.AddRange(mesh.normals);
+            uvs.AddRange(mesh.uv);
+
+            int[] t = mesh.triangles;
+
+            if (!submeshTriangles.ContainsKey(materialType))
+                submeshTriangles[materialType] = new List<int>();
+   
+            for (int i = 0; i < t.Length; i++)
+                submeshTriangles[materialType].Add(t[i] + vertexOffset);
+
+            vertexOffset += mesh.vertexCount;
+        }
+
+        Mesh combined = new Mesh();
+        combined.SetVertices(vertices);
+        combined.SetNormals(normals);
+        combined.SetUVs(0, uvs);
+
+        combined.subMeshCount = submeshTriangles.Count;
+
+        foreach (var kvp in submeshTriangles)
+            combined.SetTriangles(kvp.Value, kvp.Key);
+
+        //combined.RecalculateNormals();
         combined.RecalculateBounds();
 
         return combined;
