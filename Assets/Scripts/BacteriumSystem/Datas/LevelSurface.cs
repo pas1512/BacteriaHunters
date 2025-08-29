@@ -5,6 +5,7 @@ public struct LevelSurface
     public readonly Vector3 position;
     public readonly Vector2 size;
     public readonly Quaternion rotation;
+    public readonly float area;
     public Vector3 normal => rotation * Vector3.forward;
     
     public LevelSurface(Transform surface)
@@ -12,6 +13,7 @@ public struct LevelSurface
         position = surface.position;
         size = surface.localScale;
         rotation = surface.rotation;
+        area = size.x * size.y;
     }
 
     public LevelSurface(Vector3 position, Quaternion roataion, Vector2 size)
@@ -19,6 +21,7 @@ public struct LevelSurface
         this.position = position;
         this.size = size;
         this.rotation = roataion;
+        this.area = size.x * size.y;
     }
 
     public bool Raycast(Vector3 origin, Vector3 dir, float maxDist, out RaycastResult raycastResult)
@@ -59,6 +62,15 @@ public struct LevelSurface
         offset.z = 0;
 
         return position + rotation * offset;
+    }
+
+    public Vector3 GetClosestPosition(Vector3 point)
+    {
+        Vector3 localPos = Quaternion.Inverse(rotation) * (point - position);
+        Vector2 hSize = size / 2;
+        float clampedX = Mathf.Clamp(localPos.x, -hSize.x, hSize.x);
+        float clampedY = Mathf.Clamp(localPos.y, -hSize.y, hSize.y);
+        return rotation * new Vector3(clampedX, clampedY, 0) + position;
     }
 
     public Matrix4x4 GetTRS() => Matrix4x4.TRS(position, rotation, size);

@@ -26,6 +26,23 @@ public class GameWorld : MonoBehaviour
 
     private NativeArray<CastingData> _castings;
 
+    public struct DemoRay
+    {
+        public Vector3 p;
+        public Vector3 d;
+
+        public DemoRay(Vector3 p, Vector3 d)
+        {
+            this.p = p;
+            this.d = d;
+        }
+    }
+
+/*    NativeArray<DemoRay> rays;
+    NativeArray<DemoRay> rays1;
+    NativeArray<DemoRay> rays2;
+    NativeArray<DemoRay> rays3;*/
+
     //ceches
     int _materialsCount;
     private Dictionary<int, BacteriumData> _types;
@@ -82,12 +99,17 @@ public class GameWorld : MonoBehaviour
                 UpdateArray(ref _bacteria, array);
                 UpdateArray(ref _accelerations, currentCount);
                 UpdateArray(ref _castings, currentCount);
+/*                UpdateArray(ref rays, currentCount);
+                UpdateArray(ref rays1, currentCount);
+                UpdateArray(ref rays2, currentCount);
+                UpdateArray(ref rays3, currentCount);*/
             }
 
             var boidsJob = new InteractionsJob(_bacteria, _paints, _accelerations, _castings);
             var boidsHandle = boidsJob.Schedule(currentCount, 0);
 
             var moveJob = new MoveJob(_accelerations, _surfaces, _bacteria, Time.deltaTime);
+            //moveJob.SetCustst(rays, rays1, rays2, rays3);
             _currentJob = moveJob.Schedule(currentCount, 0, boidsHandle);
 
             while (!_currentJob.IsCompleted)
@@ -95,6 +117,7 @@ public class GameWorld : MonoBehaviour
 
             _currentJob.Complete();
             _bacterialsContainer.SyncData(_bacteria);
+
             ApplyCastings();
             UpdateView();
 
@@ -250,6 +273,10 @@ public class GameWorld : MonoBehaviour
 
     private void OnDestroy()
     {
+/*        rays.Dispose();
+        rays1.Dispose();
+        rays2.Dispose();
+        rays3.Dispose();*/
         _currentJob.Complete();
         if (_paints.IsCreated) _paints.Dispose();
         if (_bacteria.IsCreated) _bacteria.Dispose();
@@ -262,5 +289,19 @@ public class GameWorld : MonoBehaviour
     {
         GUILayout.Label($"Bacterial: {_bacterialNumber}");
         GUILayout.Label($"Spots: {_spotsNumber}");
+    }
+
+    private void OnDrawGizmos()
+    {
+/*        if (rays == default || rays.Length <= 0)
+            return;
+
+        for (int i = 0; i < rays.Length; i++)
+        {
+            Gizmos.DrawRay(rays[i].p, rays[i].d);
+            Gizmos.DrawRay(rays1[i].p, rays1[i].d);
+            Gizmos.DrawRay(rays2[i].p, rays2[i].d);
+            Gizmos.DrawRay(rays3[i].p, rays3[i].d);
+        }*/
     }
 }

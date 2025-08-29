@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Level1
   m_EditorClassIdentifier: 
   _bacteries:
-    _min: 250
-    _max: 500
-  _steps: 2
+    _min: 50
+    _max: 75
+  _steps: 1
   _roomWidth:
     _min: 3
     _max: 5
