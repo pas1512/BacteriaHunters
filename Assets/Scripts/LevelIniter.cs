@@ -9,7 +9,7 @@ public class LevelIniter : MonoBehaviour
 
     private void Start()
     {
-        var parameters = _parameters[PasueMenu.GetLevelNumber() % _parameters.Length];
+        var parameters = _parameters[SelectLevelGUI.GetLevelNumber() % _parameters.Length];
         RoomsGenerator generator = new RoomsGenerator();
         Room[] rooms = generator.Generate(transform.position, parameters);
         var surfaces = _mesher.GetSurfaces(rooms);

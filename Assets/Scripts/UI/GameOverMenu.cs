@@ -30,6 +30,14 @@ public class GameOverMenu : MonoBehaviour
 
     public void Exit() => Application.Quit();
 
+    public void ToLobby()
+    {
+        Time.timeScale = 1;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        SceneManager.LoadScene(0);
+    }
+
     public void Repeat()
     {
         Time.timeScale = 1;

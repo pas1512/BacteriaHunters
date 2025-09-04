@@ -27,6 +27,14 @@ public class WinMenu : MonoBehaviour
         }
     }
 
+    public void ToLobby()
+    {
+        Time.timeScale = 1;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        SceneManager.LoadScene(0);
+    }
+
     public void Exit() => Application.Quit();
 
     public void Repeat()

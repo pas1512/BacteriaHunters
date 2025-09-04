@@ -3,8 +3,6 @@ using UnityEngine.SceneManagement;
 
 public class PasueMenu : MonoBehaviour
 {
-    public const string LEVEL = "LevelNumber";
-
     [SerializeField] private GameObject _menu;
 
     private void Start() => Hide();
@@ -21,9 +19,15 @@ public class PasueMenu : MonoBehaviour
         }
     }
 
-    public static int GetLevelNumber() => PlayerPrefs.GetInt(LEVEL, 0);
-    public static void SetLevelNumber(int number) => PlayerPrefs.SetInt(LEVEL, number);
     public void Exit() => Application.Quit();
+
+    public void ToLobby()
+    {
+        Time.timeScale = 1;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        SceneManager.LoadScene(0);
+    }
 
     public void Reload()
     {
@@ -32,13 +36,6 @@ public class PasueMenu : MonoBehaviour
         Cursor.visible = false;
         var level = SceneManager.GetActiveScene();
         SceneManager.LoadScene(level.buildIndex);
-    }
-
-    public void NextLevel()
-    {
-        int level = PlayerPrefs.GetInt(LEVEL);
-        SetLevelNumber(level + 1);
-        Reload();
     }
 
     public void Hide()
