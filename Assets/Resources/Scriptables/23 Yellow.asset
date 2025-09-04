@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _material: {fileID: 2100000, guid: 3538f7d8401806f4f8a174d46cfcb50a, type: 2}
   _typeId: 23
-  _size: 0.1
+  _size: 0.2
   _lookArea: 1
   _speed: 0.3
   _targets:

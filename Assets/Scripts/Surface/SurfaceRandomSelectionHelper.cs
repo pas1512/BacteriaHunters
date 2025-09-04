@@ -36,5 +36,4 @@ public class SurfaceRandomSelectionHelper
 
         return _surfaces[min];
     }
-
 }

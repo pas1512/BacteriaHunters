@@ -37,6 +37,9 @@ public class FPSController: MonoBehaviour
 
     private void Update()
     {
+        if (Time.timeScale == 0)
+            return;
+
         //look
         float mouseX = Input.GetAxis("Mouse X") *  _sens;
         float mouseY = Input.GetAxis("Mouse Y") * -_sens;

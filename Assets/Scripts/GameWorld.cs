@@ -13,14 +13,16 @@ public class GameWorld : MonoBehaviour
     [SerializeField] private BacteriumData[] _bacterialVariations;
     [SerializeField] private Material[] _paintsMaterials; 
     private static GameWorld _instance;
+    
+    public static int bacterials => _instance._bacterialNumber;
 
     private NativeArray<LevelSurface> _surfaces;
     private bool _surfacesSetuped;
 
-    private PaintsContainer _paintContainer;
+    [SerializeField] private PaintsContainer _paintContainer;
     private NativeArray<PaintPoint> _paints;
 
-    private BacterialContainer _bacterialsContainer;
+    [SerializeField] private BacterialContainer _bacterialsContainer;
     private NativeArray<Bacterium> _bacteria;
     private NativeArray<Vector3> _accelerations;
 
@@ -87,6 +89,7 @@ public class GameWorld : MonoBehaviour
             int currentCount = array.Length;
             _bacterialNumber = _bacteria.Length;
             _spotsNumber = _paints.Length;
+            _paintContainer.Update(Time.deltaTime);
 
             if (_paintContainer.IsChanged())
             {
@@ -242,9 +245,14 @@ public class GameWorld : MonoBehaviour
                 _paintContainer.TakePaint(targetId, current.size);
 
                 if (_castings[i].selfDestruction)
+                {
+                    ItemSpawner.TrySpawnStat(_bacteria[i].position, _bacteria[i].normal);
                     removedBacterium.Add(i);
+                }
                 else if (Random.Range(0, 4) == 0)
+                {
                     added.Add(current.Duplicate());
+                }
             }
         }
 
@@ -287,8 +295,8 @@ public class GameWorld : MonoBehaviour
 
     private void OnGUI()
     {
-        GUILayout.Label($"Bacterial: {_bacterialNumber}");
-        GUILayout.Label($"Spots: {_spotsNumber}");
+/*        GUILayout.Label($"Bacterial: {_bacterialNumber}");
+        GUILayout.Label($"Spots: {_spotsNumber}");*/
     }
 
     private void OnDrawGizmos()

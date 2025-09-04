@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 [Serializable]
 public class PaintsContainer 
 {
+    [SerializeField] private float _dissolutionSpeed = 0.05f;
     [SerializeField] private List<PaintPoint> _paints;
     private bool _changed;
 
@@ -40,6 +41,27 @@ public class PaintsContainer
         float newArea = paint.GetArea() - size;
         paint.SetArea(newArea);
         _paints[id] = paint;
+        _changed = true;
+    }
+
+    public void Update(float dt)
+    {
+        for (int i = 0; i < _paints.Count; i++)
+        {
+            var paint = _paints[i];
+            float size = paint.GetArea() - _dissolutionSpeed * dt;
+
+            if(size > 0.01f)
+            {
+                paint.SetArea(size);
+                _paints[i] = paint;
+            }
+            else
+            {
+                _paints.RemoveAt(i);
+            }
+        }
+
         _changed = true;
     }
 
