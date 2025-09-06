@@ -145,7 +145,7 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 1.75
+  m_Height: 1.7
   m_Radius: 0.4
   m_SlopeLimit: 45
   m_StepOffset: 0.3
@@ -166,7 +166,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 5
   _sens: 4
-  _jump: 2
-  _gravityScale: 1
+  _jump: 7.5
+  _gravityScale: 3.2
   _runModifier: 1.5
   _runKey: 304

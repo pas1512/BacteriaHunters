@@ -54,33 +54,30 @@ public class FPSController: MonoBehaviour
 
 
         //movement
-
         float speed = _speed;
 
         if (Input.GetKey(_runKey))
             speed *= _runModifier;
 
-
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
-        Vector3 move = new Vector3(x, 0, z);
-        move = Vector3.ClampMagnitude(move, 1);
-        move *= speed * Time.deltaTime;
+        Vector3 move = new Vector3(x * speed, 0, z * speed);
+        move = Vector3.ClampMagnitude(move, speed);
 
         if (_controller.isGrounded)
         {
             if (Input.GetAxis("Jump") != 0)
-                _gravity = _jump * 0.01f;
+                _gravity = _jump;
             else
                 _gravity = -1;
         }
         else
         {
-            _gravity += Physics.gravity.y * _gravityScale * Time.deltaTime * 0.01f;
+            _gravity += Physics.gravity.y * _gravityScale * Time.deltaTime;
         }
 
         move.y = _gravity;
 
-        _controller.Move(transform.rotation * move);
+        _controller.Move(transform.rotation * move * Time.deltaTime);
     }
 }

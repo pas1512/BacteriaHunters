@@ -27,6 +27,8 @@ public class LineBar : MonoBehaviour
         SetValue(value);
     }
 
+    private void Start() => OnValidate();
+
     private void Reset()
     {
         int childsCound = transform.childCount;
