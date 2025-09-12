@@ -7,6 +7,9 @@ public class LevelIniter : MonoBehaviour
     [SerializeField] private LevelMesh _mesh;
     [SerializeField] private GameWorld _world;
 
+    private static Reward _revard;
+    public static Reward revard => _revard;
+
     private void Start()
     {
         var parameters = _parameters[InteractionMenuActions.GetLevelNumber() % _parameters.Length];
@@ -15,7 +18,8 @@ public class LevelIniter : MonoBehaviour
         var surfaces = _mesher.GetSurfaces(rooms);
         Mesh mesh = RoomMesher.GenerateMesh2(surfaces);
         _mesh.SetMesh(mesh, parameters.GetLevelMaterials());
-        _world.SetBacteriasNumber(parameters.GetBacteriesNumber());
+        _revard = parameters.GetReavard();
+        _world.SetBacteria(parameters.GetBacteriaCount(), parameters.GetBacteriaTypes());
         _world.SetSurfaces(surfaces);
     }
 }

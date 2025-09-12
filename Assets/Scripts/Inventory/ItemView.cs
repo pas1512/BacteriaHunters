@@ -8,6 +8,11 @@ public class ItemView : MonoBehaviour
     [SerializeField] private Text _count;
     private Inventory _invetory;
 
+    public void Setup(ItemType type)
+    {
+        _type = type;
+    }
+
     private void Start()
     {
         _invetory = FindAnyObjectByType<Inventory>();

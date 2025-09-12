@@ -1,10 +1,13 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class WinMenu : MonoBehaviour
 {
     [SerializeField] private GameObject _menu;
     [SerializeField] private PasueMenu _pause;
+    [SerializeField] private Text _revardNumber;
+    [SerializeField] private Inventory _inventory;
 
     private void Start()
     {
@@ -18,6 +21,8 @@ public class WinMenu : MonoBehaviour
     {
         if(GameWorld.bacterials <= 0 && !_menu.activeSelf)
         {
+            _revardNumber.text = LevelIniter.revard.ToString();
+            _inventory.Change();
             Inventory.SaveStat();
             _pause.Hide();
             _menu.SetActive(true);

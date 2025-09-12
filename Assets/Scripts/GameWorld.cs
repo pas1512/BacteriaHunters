@@ -54,7 +54,11 @@ public class GameWorld : MonoBehaviour
     private Mesh _quad;
     private JobHandle _currentJob;
 
-    public void SetBacteriasNumber(int number) => _bacterialNumber = number;
+    public void SetBacteria(int number, BacteriumData[] types)
+    {
+        _bacterialNumber = number;
+        _bacterialVariations = types;
+    }
 
     public IEnumerator Start()
     {
