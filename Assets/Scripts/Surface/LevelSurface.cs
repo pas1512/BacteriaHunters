@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public struct LevelSurface
+public struct LevelSurface : IUnevenSelectable
 {
     public readonly int materialType;
     public readonly Vector3 position;
@@ -10,7 +10,9 @@ public struct LevelSurface
     public readonly Vector3 normal;
     public readonly Vector3 tangent;
     public readonly Vector3 bitangent;
-    
+
+    public float unevenSelectionWeight => area;
+
     public LevelSurface(Transform surface, int materialType = 0)
     {
         this.materialType = materialType;

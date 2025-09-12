@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName="Item")]
-public class ItemType : ScriptableObject
+public class ItemType : ScriptableObject, IUnevenSelectable
 {
     [SerializeField] private int _index;
     public int index => _index;
@@ -21,6 +21,8 @@ public class ItemType : ScriptableObject
 
     [SerializeField] private int _spawnChance;
     public int spawnChance => _spawnChance;
+
+    public float unevenSelectionWeight => _spawnChance;
 
     private void OnValidate()
     {

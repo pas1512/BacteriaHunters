@@ -2,24 +2,29 @@ using UnityEngine;
 
 public class LevelIniter : MonoBehaviour
 {
-    [SerializeField] private RoomsGeneratorParameters[] _parameters;
+    public const string LEVELS_PATH = "Scriptables/Levels";
+
     [SerializeField] private RoomMesher _mesher;
     [SerializeField] private LevelMesh _mesh;
     [SerializeField] private GameWorld _world;
 
     private static Reward _revard;
-    public static Reward revard => _revard;
+    public static Reward reward => _revard;
 
     private void Start()
     {
-        var parameters = _parameters[InteractionMenuActions.GetLevelNumber() % _parameters.Length];
+        int currentLevelNumber = InteractionMenuActions.GetLevelNumber();
+        LevelParameters[] levelParameters = Resources.LoadAll<LevelParameters>(LEVELS_PATH);
+        LevelParameters level = levelParameters[currentLevelNumber % levelParameters.Length];
+
         RoomsGenerator generator = new RoomsGenerator();
-        Room[] rooms = generator.Generate(transform.position, parameters);
-        var surfaces = _mesher.GetSurfaces(rooms);
+        Room[] rooms = generator.Generate(transform.position, level.room);
+        LevelSurface[] surfaces = _mesher.GetSurfaces(rooms);
         Mesh mesh = RoomMesher.GenerateMesh2(surfaces);
-        _mesh.SetMesh(mesh, parameters.GetLevelMaterials());
-        _revard = parameters.GetReavard();
-        _world.SetBacteria(parameters.GetBacteriaCount(), parameters.GetBacteriaTypes());
+        _mesh.SetMesh(mesh, level.GetMaterials());
+
+        _revard = level.GetReavard();
+        _world.SetBacteria(level.GetBacteriaCount(), level.bacterium);
         _world.SetSurfaces(surfaces);
     }
 }

@@ -40,7 +40,7 @@ public class GameWorld : MonoBehaviour
         }
     }
 
-/*    NativeArray<DemoRay> rays;
+/*  NativeArray<DemoRay> rays;
     NativeArray<DemoRay> rays1;
     NativeArray<DemoRay> rays2;
     NativeArray<DemoRay> rays3;*/

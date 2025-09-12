@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa0a6157f378ccc45bf4a310a5fb793b, type: 3}
+  m_Name: Level
+  m_EditorClassIdentifier: 
+  _bacteriaCount:
+    _min: 20
+    _max: 25
+  _bacteriaTypes:
+  - {fileID: 11400000, guid: 4dc2bef57d6f74446a9a367b60e50c63, type: 2}
+  - {fileID: 11400000, guid: 9c41bdbaeb0c14e41b624321ff4ed617, type: 2}
+  - {fileID: 11400000, guid: ab293e31b6332eb4280d0e3467ca50d2, type: 2}
+  - {fileID: 11400000, guid: a147bb3f16be17f40ba9642c4f71943d, type: 2}
+  _rewards:
+  - _itemType: {fileID: 11400000, guid: 2c366e98586538143903b2feb00e9dc0, type: 2}
+    _minCount: 2
+    _maxCount: 4
+    _count: 0
+  _room:
+    _steps: 1
+    _roomWidth:
+      _min: 3
+      _max: 5
+    _roomLength:
+      _min: 3
+      _max: 5
+    _generationsSteps:
+      _min: 0.01
+      _max: 0.5
+    _neighborsCount:
+      _min: 1
+      _max: 1
+    _minOverlape: 1
+    _doorWidth: 1.5
+    _wallWidth: 0.5
+  _floor: {fileID: 2100000, guid: a73f7053b98c1f246ad6962ca2577160, type: 2}
+  _walls: {fileID: 2100000, guid: 7bcdbade7430bb34f9bda9630b285cf6, type: 2}
+  _ceil: {fileID: 2100000, guid: a73f7053b98c1f246ad6962ca2577160, type: 2}

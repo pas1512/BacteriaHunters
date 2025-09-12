@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class SuppliesShop : MonoBehaviour
@@ -10,6 +11,7 @@ public class SuppliesShop : MonoBehaviour
     private void Awake()
     {
         SuppliesOfferData[] datas = Resources.LoadAll<SuppliesOfferData>(DATAS_PATH);
+        datas = datas.OrderBy(d => d.id).ToArray();
 
         for (int i = 0; i < datas.Length; i++)
         {
@@ -19,25 +21,31 @@ public class SuppliesShop : MonoBehaviour
         }
     }
 
-    public void Apply(SuppliesOfferData data)
+    public void Buy(SuppliesOfferData data)
     {
-        if (IsAviable(data))
+        if (BuyAviable(data))
         {
-            _inventory.Change(data.buy, -data.buyCount);
-            _inventory.Change(data.sell, data.sellCount);
+            _inventory.Change(data.priceItem, -data.buyPrice);
+            _inventory.Change(data.item, data.buyCount);
         }
     }
 
-    public bool IsAviable(SuppliesOfferData data)
+    public void Sell(SuppliesOfferData data)
     {
-        try
+        if (SellAviable(data))
         {
-            return _inventory.GetCount(data.buy) >= data.buyCount;
+            _inventory.Change(data.item, -data.sellCount);
+            _inventory.Change(data.priceItem, data.sellPrice);
         }
-        catch
-        {
-            print($"inventory: {_inventory}, data: {data}");
-            return false;
-        }
+    }
+
+    public bool BuyAviable(SuppliesOfferData data)
+    {
+        return _inventory.GetCount(data.priceItem) >= data.buyCount;
+    }
+
+    public bool SellAviable(SuppliesOfferData data)
+    {
+        return data.sellable && _inventory.GetCount(data.item) >= data.sellCount;
     }
 }

@@ -5,7 +5,7 @@ using Random = UnityEngine.Random;
 
 public class RoomsGenerator
 {
-    public Room[] Generate(Vector2 originPoint, RoomsGeneratorParameters parameters)
+    public Room[] Generate(Vector2 originPoint, RoomParameters parameters)
     {
         Room firstRect = CreateFirstRoom(originPoint, parameters);
         List<Room> rooms = new List<Room>() { firstRect };
@@ -17,7 +17,7 @@ public class RoomsGenerator
         return rooms.ToArray();
     }
 
-    private Room CreateFirstRoom(Vector3 originPoint, RoomsGeneratorParameters parameters)
+    private Room CreateFirstRoom(Vector3 originPoint, RoomParameters parameters)
     {
         Vector2 size = new Vector2(parameters.GetSizeX(), parameters.GetSizeY());
         return new Room(originPoint, size);
@@ -38,7 +38,7 @@ public class RoomsGenerator
         return true;
     }
 
-    private void FillRoomList(Room room, int steps, RoomsGeneratorParameters parameters, List<Room> rooms)
+    private void FillRoomList(Room room, int steps, RoomParameters parameters, List<Room> rooms)
     {
         List<Room> created = new List<Room>();
         float randomOffset = Random.Range(0f, 1f);

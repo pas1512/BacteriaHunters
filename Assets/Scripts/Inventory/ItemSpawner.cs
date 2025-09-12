@@ -5,12 +5,12 @@ public class ItemSpawner : MonoBehaviour
     [SerializeField] private int _attempts;
     [SerializeField] private DropedItem _prefab;
     [SerializeField] private ItemType[] _types;
-    private ItemTypeRandomSelectionHelper _selector;
+    private UnevenSelector<ItemType> _selector;
     private static ItemSpawner _instance;
 
     private void Start()
     {
-        _selector = new ItemTypeRandomSelectionHelper(_types);
+        _selector = new UnevenSelector<ItemType>(_types);
         _instance = this;
     }
 

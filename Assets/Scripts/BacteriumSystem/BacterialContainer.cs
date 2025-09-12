@@ -16,11 +16,11 @@ public class BacterialContainer
         _bacteria = new List<Bacterium>(count);
         _changed = true;
 
-        SurfaceRandomSelectionHelper surfaceSelector = new SurfaceRandomSelectionHelper(surfaces);
+        UnevenSelector<LevelSurface> selector = new UnevenSelector<LevelSurface>(surfaces);
 
         for (int i = 0; i < count; i++)
         {
-            LevelSurface surface = surfaceSelector.GetRandom();
+            LevelSurface surface = selector.GetRandom();
             int randomData = Random.Range(0, variants.Length);
             Vector3 normal = surface.normal;
             Vector3 position = surface.GetRandomPosition() + normal * MIN_SURFACE_DISTANCE;

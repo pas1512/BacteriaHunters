@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8f62d717c816ac4493015f2172fe5d8, type: 3}
   m_Name: Offer 1
   m_EditorClassIdentifier: 
-  _sell: {fileID: 11400000, guid: 2c366e98586538143903b2feb00e9dc0, type: 2}
-  _sellCount: 1
-  _buy: {fileID: 11400000, guid: 926d73224aa5b0e48887c7418a40f06d, type: 2}
-  _buyCount: 15
+  _id: 1
+  _item: {fileID: 11400000, guid: b1611f68a46cd0442afae08bdcac114f, type: 2}
+  _priceItem: {fileID: 11400000, guid: 2c366e98586538143903b2feb00e9dc0, type: 2}
+  _buyCount: 10
+  _buyPrice: 1
+  _sellable: 1
+  _sellCount: 11
+  _sellPrice: 1

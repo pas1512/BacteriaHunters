@@ -3,7 +3,7 @@ using UnityEngine;
 public class RoomsGeneratorTester : MonoBehaviour
 {
     [SerializeField] private bool _drawGizmos;
-    [SerializeField] private RoomsGeneratorParameters _parameters;
+    [SerializeField] private RoomParameters _parameters;
     [SerializeField, HideInInspector] private Room[] _rooms;
 
     private Vector3 To3D(Vector2 v2) => new Vector3(v2.x, 0, v2.y);
