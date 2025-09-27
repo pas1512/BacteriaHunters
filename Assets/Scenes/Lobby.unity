@@ -548,7 +548,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 85bf9294e0e3baa45821ea9b8eddd757, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 0.6
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -680,7 +680,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -772,8 +772,8 @@ AudioHighPassFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 90872011}
   m_Enabled: 1
-  m_CutoffFrequency: 300
-  m_HighpassResonanceQ: 1
+  m_CutoffFrequency: 400
+  m_HighpassResonanceQ: 3
 --- !u!169 &90872015
 AudioLowPassFilter:
   m_ObjectHideFlags: 0
@@ -807,7 +807,7 @@ AudioDistortionFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 90872011}
   m_Enabled: 1
-  m_DistortionLevel: 0.1
+  m_DistortionLevel: 0.05
 --- !u!164 &90872017
 AudioReverbFilter:
   m_ObjectHideFlags: 0
@@ -818,19 +818,19 @@ AudioReverbFilter:
   m_Enabled: 1
   m_DryLevel: 0
   m_Room: -1000
-  m_RoomHF: -454
-  m_DecayTime: 0.4
-  m_DecayHFRatio: 0.83
-  m_ReflectionsLevel: -1646
-  m_ReverbLevel: 53
-  m_ReverbDelay: 0.003
+  m_RoomHF: -500
+  m_DecayTime: 3.92
+  m_DecayHFRatio: 0.7
+  m_ReflectionsLevel: -1230
+  m_ReverbLevel: -2
+  m_ReverbDelay: 0.029
   m_Diffusion: 100
   m_Density: 100
   m_HFReference: 5000
   m_RoomLF: 0
   m_LFReference: 250
   m_ReflectionsDelay: 0
-  m_ReverbPreset: 3
+  m_ReverbPreset: 8
 --- !u!1 &91168172
 GameObject:
   m_ObjectHideFlags: 0
@@ -6756,9 +6756,11 @@ MonoBehaviour:
   _data: {fileID: 11400000, guid: 902ba5c926f87cb4b871637f20372f64, type: 2}
   _clips:
   - {fileID: 8300000, guid: 40c14385072f3b94bb2a95129102d5fb, type: 3}
-  - {fileID: 8300000, guid: 788359f13cf31134fbb2395d21ad6980, type: 3}
   - {fileID: 8300000, guid: 36d4a25c2c5d19d4399c9e1132cb7500, type: 3}
   - {fileID: 8300000, guid: 3e263aa630fb3324997013dcf38e973c, type: 3}
+  - {fileID: 8300000, guid: 250e0d7f776694647a0b796ba61890c3, type: 3}
+  - {fileID: 8300000, guid: 7f962cd0e6774184eb9b4dac7f97bd3d, type: 3}
+  - {fileID: 8300000, guid: 4f6cbda771dffa648b7892f7157b3295, type: 3}
   _effectSource: {fileID: 65009015}
   _music: {fileID: 90872013}
 --- !u!65 &1658199308
