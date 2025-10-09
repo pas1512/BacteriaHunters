@@ -51,6 +51,19 @@ public class Inventory : MonoBehaviour
         Load();
     }
 
+    public (T, int)[] GetAll<T>() where T: ItemType
+    {
+        List<(T, int)> result = new List<(T, int)>();
+
+        for (int i = 0; i < _types.Count; i++)
+        {
+            if (_numbers[i] > 0 && _types[i] is T type)
+                result.Add((type, _numbers[i]));
+        }
+
+        return result.ToArray();
+    }
+
     public int GetCount(ItemType type)
     {
         int id = _types.IndexOf(type);
@@ -109,6 +122,11 @@ public class Inventory : MonoBehaviour
 
             if (_numbers[id] < 0)
                 _numbers[id] = 0;
+        }
+        else
+        {
+            _types.Add(type);
+            _numbers.Add(number);
         }
     }
     

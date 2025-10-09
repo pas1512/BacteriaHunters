@@ -7,16 +7,17 @@ public class SuppliesShop : MonoBehaviour
     [SerializeField] private Inventory _inventory;
     [SerializeField] private SuppliesOffer _prefab;
     [SerializeField] private RectTransform _offersContainer;
+    [SerializeField] private SuppliesOfferData[] _datas;
 
     private void Awake()
     {
-        SuppliesOfferData[] datas = Resources.LoadAll<SuppliesOfferData>(DATAS_PATH);
-        datas = datas.OrderBy(d => d.id).ToArray();
+/*        SuppliesOfferData[] datas = Resources.LoadAll<SuppliesOfferData>(DATAS_PATH);
+        datas = datas.OrderBy(d => d.id).ToArray();*/
 
-        for (int i = 0; i < datas.Length; i++)
+        for (int i = 0; i < _datas.Length; i++)
         {
             SuppliesOffer offer = Instantiate(_prefab, _offersContainer);
-            offer.Setup(this, datas[i]);
+            offer.Setup(this, _datas[i]);
             offer.gameObject.SetActive(true);
         }
     }
