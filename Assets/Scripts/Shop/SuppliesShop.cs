@@ -42,7 +42,7 @@ public class SuppliesShop : MonoBehaviour
 
     public bool BuyAviable(SuppliesOfferData data)
     {
-        return _inventory.GetCount(data.priceItem) >= data.buyCount;
+        return _inventory.GetCount(data.priceItem) >= data.buyPrice;
     }
 
     public bool SellAviable(SuppliesOfferData data)

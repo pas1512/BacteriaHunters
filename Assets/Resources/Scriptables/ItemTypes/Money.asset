@@ -17,4 +17,4 @@ MonoBehaviour:
   _name: Money
   _minSpawnNumber: 1
   _maxSpawnNumber: 1
-  _spawnChance: 13
+  _spawnChance: 25

@@ -17,4 +17,4 @@ MonoBehaviour:
   _name: YellowPaint
   _minSpawnNumber: 2
   _maxSpawnNumber: 5
-  _spawnChance: 15
+  _spawnChance: 50

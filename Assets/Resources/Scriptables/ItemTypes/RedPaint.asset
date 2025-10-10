@@ -17,4 +17,4 @@ MonoBehaviour:
   _name: RedPaint
   _minSpawnNumber: 3
   _maxSpawnNumber: 5
-  _spawnChance: 15
+  _spawnChance: 50

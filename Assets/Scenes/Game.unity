@@ -583,6 +583,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b1611f68a46cd0442afae08bdcac114f, type: 2}
   - {fileID: 11400000, guid: f8371a58e134e9a46a4d3a2e687e09f4, type: 2}
   - {fileID: 11400000, guid: a2926d43601f85a459b70c830d1d0443, type: 2}
+  - {fileID: 11400000, guid: 9abfe6105eb7d4045845c64000434ef0, type: 2}
+  - {fileID: 11400000, guid: 59445334c18527b44b0068a2ed6efd24, type: 2}
+  - {fileID: 11400000, guid: c8fa3cf657784124e9897c5248865055, type: 2}
+  - {fileID: 11400000, guid: 238cc66fb51c5a14d92fbe3a5b843e9f, type: 2}
+  - {fileID: 11400000, guid: 6cab6b3868ed0e94bb2a6fd205ae3d1f, type: 2}
+  - {fileID: 11400000, guid: b80d021970d24b9449b032bc50e34054, type: 2}
 --- !u!1 &121002445
 GameObject:
   m_ObjectHideFlags: 0
@@ -7390,11 +7396,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5530264618474088843, guid: 597ffa1146bf96e4a956560db33774c8, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1.1368684e-13
+      value: 5.684342e-14
       objectReference: {fileID: 0}
     - target: {fileID: 5530264618474088843, guid: 597ffa1146bf96e4a956560db33774c8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -5.684342e-14
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7091491050004937895, guid: 597ffa1146bf96e4a956560db33774c8, type: 3}
       propertyPath: m_Pivot.x

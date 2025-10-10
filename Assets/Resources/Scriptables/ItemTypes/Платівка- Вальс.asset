@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd086269a7641b94c999aa9752dc0ff9, type: 3}
   m_Name: "\u041F\u043B\u0430\u0442\u0456\u0432\u043A\u0430- \u0412\u0430\u043B\u044C\u0441"
   m_EditorClassIdentifier: 
-  _index: 8
+  _index: 10
   _sprite: {fileID: 21300000, guid: ec4c380c13f8e1148a40eee97f55aa83, type: 3}
   _name: "\u041F\u043B\u0430\u0442\u0456\u0432\u043A\u0430- \u0412\u0430\u043B\u044C\u0441"
   _minSpawnNumber: 1

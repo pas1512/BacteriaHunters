@@ -21,6 +21,8 @@ public class SuppliesOffer : MonoBehaviour
         _itemView.Setup(data.item);
         _buyButton.onClick.AddListener(Buy);
         _sellButton.onClick.AddListener(Sell);
+        _buyButton.interactable = _shop.BuyAviable(_data);
+        _sellButton.interactable = _shop.SellAviable(_data);
 
         _buyItem.Setup(data.item, data.buyCount);
         _buyPrice.Setup(data.priceItem, data.buyPrice);

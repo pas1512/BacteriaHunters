@@ -7,7 +7,6 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     private const string INVENTORY_KEY = "Inventory";
-    private const string TYPES_PATH = "Scriptables/ItemTypes";
 
     [SerializeField] private List<ItemType> _types;
     [SerializeField] private List<int> _numbers;
@@ -33,7 +32,7 @@ public class Inventory : MonoBehaviour
         {
             int[] ids = _ids;
             List<ItemType> types = new List<ItemType>(_ids.Length);
-            ItemType[] allTypes = Resources.LoadAll<ItemType>(TYPES_PATH);
+            ItemType[] allTypes = ItemType.GetAll();
             Dictionary<int, ItemType> dictionary = allTypes.ToDictionary(t => t.index, t => t);
 
             for (int i = 0; i < _ids.Length; i++)
